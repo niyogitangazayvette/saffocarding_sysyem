@@ -2,11 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 import numpy as np
 import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from streamlit_autorefresh import st_autorefresh
-import urllib.parse
 
 # --- Page config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
@@ -69,51 +65,23 @@ def evaluate_status(tilt):
     else:
         return "DANGER", "🔴"
 
-# --- Email alert ---
-def send_email_alert(tilt, vibration):
-    sender_email = "niyogitangazayvette@gmail.com"           # Your Gmail
-    receiver_email = "brilliantresearchersafrica@gmail.com" # Receiver
-    password = "17528036"                   # Gmail app password
-
-    subject = "🚨 Scaffold Danger Alert!"
-    body = f"Alert! Scaffold danger detected.\nTilt: {tilt}°, Vibration: {vibration}.\nPlease check immediately."
-
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = receiver_email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-
+# --- SMS Alert with Textbelt ---
+def send_sms_alert(tilt, vibration):
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-        server.quit()
-        st.success(" Email alert sent successfully!")
-    except Exception as e:
-        st.error(f" Failed to send email: {e}")
-
-# --- WhatsApp alert ---
-def send_whatsapp_alert(tilt, vibration):
-    phone = "250788886315"  # Your WhatsApp number without '+' sign
-    message = f"Alert! Scaffold danger detected.\nTilt: {tilt}°, Vibration: {vibration}.\nPlease check immediately."
-    encoded_message = urllib.parse.quote(message)
-    api_key = "your_api_key"  # Replace with your CallMeBot API key
-
-    url = f"https://api.callmebot.com/whatsapp.php?phone={phone}&text={encoded_message}&apikey={api_key}"
-
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            st.success(" WhatsApp alert sent successfully!")
+        response = requests.post('https://textbelt.com/text', {
+            'phone': '+250788886315',  # Replace with your phone number including country code
+            'message': f"ALERT! Scaffold danger.\nTilt={tilt}°, Vib={vibration}. Immediate action needed!",
+            'key': 'textbelt'  # Free API key, 1 SMS/day limit
+        })
+        result = response.json()
+        if result.get('success'):
+            st.success("🚨 SMS alert sent successfully!")
         else:
-            st.error(f" WhatsApp alert failed, status code: {response.status_code}")
+            st.warning(f"SMS failed: {result.get('error', 'Unknown error')}")
     except Exception as e:
-        st.error(f"WhatsApp alert error: {e}")
+        st.error(f"Failed to send SMS alert: {e}")
 
 # --- Main UI ---
-
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
@@ -168,8 +136,7 @@ with st.container():
     st.markdown('</div>', unsafe_allow_html=True)
 
 if status == "DANGER":
-    send_email_alert(tilt, vibration)
-    send_whatsapp_alert(tilt, vibration)
+    send_sms_alert(tilt, vibration)
 
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
