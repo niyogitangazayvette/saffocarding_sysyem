@@ -17,11 +17,11 @@ st.markdown("""
     }
     .section {
         background-color: rgba(255, 255, 255, 0.85);
-        padding: 25px 30px;
+        padding: 30px 30px;
         margin-bottom: 20px;
         border-radius: 15px;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        border: 2px solid #004d4d;
+        border: 3px solid #004d4d;
         color: #003333;
     }
     h1, h2, h3 {
