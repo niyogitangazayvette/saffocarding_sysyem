@@ -26,21 +26,24 @@ st.markdown("""
     h1, h2, h3, .stSubheader {
         color: #00ffff !important;
     }
-    .stMetric {
-        color: white !important;
-        border: 2px solid white !important;
-        padding: 10px;
+    .custom-metric {
+        background-color: rgba(255, 255, 255, 0.07);
+        border: 2px solid white;
         border-radius: 10px;
-        background-color: rgba(255,255,255,0.05);
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: center;
     }
-    .stSuccess {
-        color: #22c55e !important;
+    .custom-metric h4 {
+        color: #00ffff;
+        font-size: 20px;
+        margin-bottom: 5px;
     }
-    .stWarning {
-        color: #facc15 !important;
-    }
-    .stError {
-        color: #ef4444 !important;
+    .custom-metric p {
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -104,14 +107,55 @@ with st.container():
     st.subheader(f"System Status: {emoji} {status}")
 
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Tilt Angle (°)", f"{tilt}°")
-    col2.metric("Vibration Level", f"{vibration}")
-    col3.metric("Distance from Ground (cm)", f"{distance}")
-    col4.metric("Sound Level (dB)", f"{sound_level}")
+    with col1:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Tilt Angle (°)</h4>
+            <p>{tilt}°</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Vibration Level</h4>
+            <p>{vibration}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Distance from Ground (cm)</h4>
+            <p>{distance}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Sound Level (dB)</h4>
+            <p>{sound_level}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
     col5, col6 = st.columns(2)
-    col5.metric("Bluetooth Status", "🟦 Connected" if bluetooth_signal else "❌ Disconnected")
-    col6.metric("Buzzer", buzzer_state)
+    with col5:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Bluetooth Status</h4>
+            <p>{"🟦 Connected" if bluetooth_signal else "❌ Disconnected"}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col6:
+        st.markdown(f"""
+        <div class="custom-metric">
+            <h4>Buzzer</h4>
+            <p>{buzzer_state}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
     st.markdown('</div>', unsafe_allow_html=True)
 
 # --- Tilt Gauge ---
