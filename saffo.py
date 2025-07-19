@@ -7,16 +7,16 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Teal Background ---
+# --- Custom CSS Styling with Teal Gradient Background and Styled Sections ---
 st.markdown("""
     <style>
     body, .main {
         background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #f0f8ff;
+        color: #003333;
     }
     .section {
-        background-color: rgba(255, 255, 255, 0.95);
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 25px 30px;
         margin-bottom: 20px;
         border-radius: 15px;
