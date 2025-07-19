@@ -1,0 +1,13 @@
+body {
+    background-color: #1fb9b9;
+}
+
+h1, h2, h3 {
+    color: #02457a;
+}
+
+.reportview-container .main {
+    background-color: #218693;
+    padding: 2rem;
+    border-radius: 12px;
+}
