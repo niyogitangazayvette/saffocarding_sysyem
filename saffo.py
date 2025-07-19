@@ -98,9 +98,10 @@ st.plotly_chart(fig, use_container_width=True)
 # --- Textbelt Alert on DANGER ---
 if status == "DANGER":
     try:
+        # Shortened SMS to fit 1 message limit
         response = requests.post('https://textbelt.com/text', {
             'phone': '+250788886315',
-            'message': f"⚠️ ALERT: Scaffolding is in DANGER!\nTilt: {tilt}°, Vibration: {vibration}. Immediate attention required!",
+            'message': f"ALERT: Tilt={tilt}°, Vib={vibration}. Scaffold danger!",
             'key': 'textbelt'  # 1 free SMS per day
         })
 
