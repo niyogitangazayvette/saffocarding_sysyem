@@ -21,7 +21,7 @@ st.markdown("""
         margin-bottom: 25px;
         border-radius: 12px;
         border: 2px solid #3b4252;  /* lighter brefonse border */
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.9);
     }
     .custom-metric {
         background-color: transparent;
@@ -59,7 +59,7 @@ st.markdown("""
         background-color: rgba(31, 41, 55, 0.9); /* transparent inside */
         border-radius: 10px;
         padding: 20px;
-        color: white;
+        color: brefonse;
     }
     </style>
 """, unsafe_allow_html=True)
