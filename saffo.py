@@ -68,9 +68,10 @@ def evaluate_status(tilt):
 # --- SMS Alert with Textbelt ---
 def send_sms_alert(tilt, vibration):
     try:
+        message_text = f"ALERT! Scaffold danger. Tilt:{tilt}°, Vib:{vibration}."
         response = requests.post('https://textbelt.com/text', {
             'phone': '+250788886315',  # Replace with your phone number including country code
-            'message': f"ALERT! Scaffold danger.\nTilt={tilt}°, Vib={vibration}. Immediate action needed!",
+            'message': message_text,
             'key': 'textbelt'  # Free API key, 1 SMS/day limit
         })
         result = response.json()
