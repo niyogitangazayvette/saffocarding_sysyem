@@ -16,7 +16,7 @@ st.markdown("""
         color: white !important;
     }
     .section {
-        background-color: rgba(30, 30, 30, 0.95);
+        background-color: rgba(31, 41, 55, 0.9);
         padding: 30px;
         margin-bottom: 25px;
         border-radius: 12px;
@@ -53,7 +53,7 @@ st.markdown("""
         padding: 10px;
         margin-bottom: 25px;
         background-color: #1f2937;  /* brefonse bg outside blackish inner */
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.9);
     }
     .bordered-card-inner {
         background-color: rgba(31, 41, 55, 0.9); /* transparent inside */
