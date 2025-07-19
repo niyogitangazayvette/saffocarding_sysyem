@@ -4,42 +4,39 @@ import numpy as np
 import requests
 from streamlit_autorefresh import st_autorefresh
 
-# --- Page config ---
+# --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Teal Gradient Background and Styled Sections ---
+# --- Custom CSS Styling with Black Background ---
 st.markdown("""
     <style>
-    body, .main {
-        background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
+    body, .main, .stApp {
+        background-color: #000000 !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #003333;
+        color: white !important;
     }
     .section {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 30px 30px;
-        margin-bottom: 20px;
-        border-radius: 15px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-        border: 3px solid #004d4d;
-        color: #003333;
+        background-color: rgba(30, 30, 30, 0.9);
+        padding: 30px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        border: 2px solid #444;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
-    h1, h2, h3 {
-        font-weight: 700;
-        color: #004d4d;
+    h1, h2, h3, .stSubheader {
+        color: #00ffff;
     }
     .stMetric {
-        font-weight: 600;
-        color: #002626;
+        color: white !important;
     }
     .stSuccess {
-        color: #219653 !important;
+        color: #22c55e !important;
     }
     .stWarning {
-        color: #f2994a !important;
+        color: #facc15 !important;
     }
     .stError {
-        color: #eb5757 !important;
+        color: #ef4444 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -70,10 +67,13 @@ def evaluate_status(tilt):
 def send_sms_alert(tilt, vibration):
     try:
         message_text = f"ALERT! Scaffold danger. Tilt:{tilt}°, Vib:{vibration}."
+        if len(message_text) > 160:
+            st.warning("Message too long. Please reduce characters.")
+            return
         response = requests.post('https://textbelt.com/text', {
-            'phone': '+250788886315',  # Replace with your phone number including country code
+            'phone': '+250788886315',
             'message': message_text,
-            'key': 'textbelt'  # Free API key, 1 SMS/day limit
+            'key': 'textbelt'
         })
         result = response.json()
         if result.get('success'):
@@ -83,19 +83,18 @@ def send_sms_alert(tilt, vibration):
     except Exception as e:
         st.error(f"Failed to send SMS alert: {e}")
 
-# --- Main UI ---
+# --- Title and Description ---
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
-    st.markdown("""
-    Monitor scaffold **tilt**, **vibration**, **distance from ground**, and **sound levels** in real-time.
-    Data updates every 5 seconds, categorized by risk level.
-    """)
+    st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, and **sound levels** in real-time. Data updates every 5 seconds, categorized by risk level.")
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --- Simulate Data ---
 tilt, vibration, distance, sound_level, bluetooth_signal, buzzer_state = get_simulated_sensor_data()
 status, emoji = evaluate_status(tilt)
 
+# --- Display System Metrics ---
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.subheader(f"System Status: {emoji} {status}")
@@ -111,6 +110,7 @@ with st.container():
     col6.metric("Buzzer", buzzer_state)
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --- Tilt Gauge ---
 fig = go.Figure(go.Indicator(
     mode="gauge+number+delta",
     value=tilt,
@@ -137,9 +137,11 @@ with st.container():
     st.plotly_chart(fig, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
+# --- Send SMS if DANGER ---
 if status == "DANGER":
     send_sms_alert(tilt, vibration)
 
+# --- Project Overview ---
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.markdown("""
