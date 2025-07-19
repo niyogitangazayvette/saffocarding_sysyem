@@ -7,29 +7,30 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling ---
+# --- Custom CSS Styling with Teal Background ---
 st.markdown("""
     <style>
     body, .main {
-        background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+        background: linear-gradient(135deg, #008080 0%, #20b2aa 100%);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #0f2540;
+        color: #f0f8ff;
     }
     .section {
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.95);
         padding: 25px 30px;
         margin-bottom: 20px;
         border-radius: 15px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        border: 2px solid #2f80ed;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        border: 2px solid #004d4d;
+        color: #003333;
     }
     h1, h2, h3 {
         font-weight: 700;
-        color: #2f80ed;
+        color: #004d4d;
     }
     .stMetric {
         font-weight: 600;
-        color: #1f2937;
+        color: #002626;
     }
     .stSuccess {
         color: #219653 !important;
