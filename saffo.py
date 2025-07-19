@@ -7,11 +7,11 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Brefonse Background and Black Bordered Cards ---
+# --- Custom CSS Styling ---
 st.markdown("""
     <style>
     body, .main, .stApp {
-        background-color: #1f2937 !important;  /* brefonse background */
+        background-color: #1f2937 !important;  /* brefonse */
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: white !important;
     }
@@ -24,8 +24,8 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
     .custom-metric {
-        background-color: transparent;  /* no fill */
-        border: 2px solid #3b4252;     /* border color matching brefonse */
+        background-color: transparent;
+        border: 2px solid #3b4252;
         border-radius: 10px;
         padding: 20px;
         margin-bottom: 20px;
@@ -45,14 +45,21 @@ st.markdown("""
     h1, h2, h3, .stSubheader {
         color: #00ffff !important;
     }
-    /* New black card style with white border */
-    .black-card {
-        background-color: #000000 !important;  /* solid black background */
+
+    /* Card border white, outer brefonse bg, inner blackish bg */
+    .bordered-card {
         border: 2px solid white !important;
         border-radius: 12px;
-        padding: 20px;
+        padding: 10px;
         margin-bottom: 25px;
+        background-color: #1f2937;  /* brefonse bg outside blackish inner */
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    }
+    .bordered-card-inner {
+        background-color: rgba(0, 0, 0, 0.6); /* black transparent inside */
+        border-radius: 10px;
+        padding: 20px;
+        color: white;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -99,16 +106,17 @@ def send_sms_alert(tilt, vibration):
     except Exception as e:
         st.error(f"Failed to send SMS alert: {e}")
 
-# --- Title and Description with Black Card ---
+# --- Title Card ---
 with st.container():
-    st.markdown('<div class="black-card">', unsafe_allow_html=True)
+    st.markdown('<div class="bordered-card"><div class="bordered-card-inner">', unsafe_allow_html=True)
     st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
+# --- Description Card ---
 with st.container():
-    st.markdown('<div class="black-card">', unsafe_allow_html=True)
+    st.markdown('<div class="bordered-card"><div class="bordered-card-inner">', unsafe_allow_html=True)
     st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, and **sound levels** in real-time. Data updates every 5 seconds, categorized by risk level.")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Simulate Data ---
 tilt, vibration, distance, sound_level, bluetooth_signal, buzzer_state = get_simulated_sensor_data()
