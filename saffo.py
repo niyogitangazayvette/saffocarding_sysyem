@@ -7,7 +7,7 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Black Background ---
+# --- Custom CSS Styling with Black Background and White Font + Bordered Metrics ---
 st.markdown("""
     <style>
     body, .main, .stApp {
@@ -16,18 +16,22 @@ st.markdown("""
         color: white !important;
     }
     .section {
-        background-color: rgba(30, 30, 30, 0.9);
+        background-color: rgba(30, 30, 30, 0.95);
         padding: 30px;
         margin-bottom: 25px;
         border-radius: 12px;
-        border: 2px solid #444;
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        border: 2px solid white;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
     }
     h1, h2, h3, .stSubheader {
-        color: #00ffff;
+        color: #00ffff !important;
     }
     .stMetric {
         color: white !important;
+        border: 2px solid white !important;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: rgba(255,255,255,0.05);
     }
     .stSuccess {
         color: #22c55e !important;
