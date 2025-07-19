@@ -2,11 +2,12 @@ import streamlit as st
 import plotly.graph_objects as go
 import numpy as np
 from streamlit_autorefresh import st_autorefresh
+from twilio.rest import Client
 
 # --- Set up page config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom Page Styling ---
+# --- Custom Styling ---
 st.markdown("""
     <style>
     body {
@@ -27,7 +28,7 @@ st.markdown("""
 # --- Auto-refresh every 5 seconds ---
 st_autorefresh(interval=5000, key="data_refresh")
 
-# --- Dashboard Title & Description ---
+# --- Dashboard Title ---
 st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
 st.markdown("""
 This live dashboard simulates monitoring of **scaffolding tilt**, **vibration**, **distance from ground**, and **sound levels** using an Arduino-based safety system.
@@ -40,12 +41,12 @@ def get_simulated_sensor_data():
     tilt = round(np.random.uniform(0, 15), 2)
     vibration = round(np.random.uniform(0, 2.5), 2)
     distance = round(np.random.uniform(50, 200), 2)
-    sound_level = round(np.random.uniform(20, 100), 2)  # dB
+    sound_level = round(np.random.uniform(20, 100), 2)
     bluetooth_signal = True if np.random.rand() > 0.1 else False
     buzzer_state = "ON" if tilt > 10 or vibration > 2.0 else "OFF"
     return tilt, vibration, distance, sound_level, bluetooth_signal, buzzer_state
 
-# --- Safety Evaluation ---
+# --- Safety Status Evaluation ---
 def evaluate_status(tilt):
     if tilt <= 5:
         return "SAFE", "🟢"
@@ -54,7 +55,7 @@ def evaluate_status(tilt):
     else:
         return "DANGER", "🔴"
 
-# --- Fetch simulated data ---
+# --- Fetch Sensor Data ---
 tilt, vibration, distance, sound_level, bluetooth_signal, buzzer_state = get_simulated_sensor_data()
 status, emoji = evaluate_status(tilt)
 
@@ -92,10 +93,27 @@ fig = go.Figure(go.Indicator(
         }
     }
 ))
-
 st.plotly_chart(fig, use_container_width=True)
 
-# --- Description Section ---
+# --- Twilio Alert on DANGER ---
+if status == "DANGER":
+    try:
+        account_sid = st.secrets["TWILIO"]["ACCOUNT_SID"]
+        auth_token = st.secrets["TWILIO"]["AUTH_TOKEN"]
+        from_phone = st.secrets["TWILIO"]["FROM_PHONE"]
+        to_phone = st.secrets["TWILIO"]["TO_PHONE"]
+
+        client = Client(account_sid, auth_token)
+        message = client.messages.create(
+            body=f"⚠️ ALERT: Scaffolding is in DANGER! Tilt: {tilt}°, Vibration: {vibration}. Immediate attention required!",
+            from_=from_phone,
+            to=to_phone
+        )
+        st.success("🚨 Danger SMS sent to Supervisor.")
+    except Exception as e:
+        st.error(f"Failed to send SMS alert: {e}")
+
+# --- Project Overview Section ---
 st.markdown("""
 ---
 ### 📘 Project Overview
