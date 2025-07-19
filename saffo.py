@@ -56,7 +56,7 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
     }
     .bordered-card-inner {
-        background-color: rgba(0, 0, 0, 0.6); /* black transparent inside */
+        background-color: rgba(31, 41, 55, 0.9); /* transparent inside */
         border-radius: 10px;
         padding: 20px;
         color: white;
