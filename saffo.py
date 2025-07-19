@@ -7,11 +7,11 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Dark Navy Background and White Font + Bordered Metrics ---
+# --- Custom CSS Styling with Brefonse (dark gray) Background and White Font + Bordered Metrics ---
 st.markdown("""
     <style>
     body, .main, .stApp {
-        background-color: #0a0f1a !important;  /* Changed from black #000000 */
+        background-color: #1f2937 !important;  /* brefonse/dark gray */
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: white !important;
     }
