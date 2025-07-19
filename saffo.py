@@ -7,7 +7,7 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Brefonse Background and Transparent Metric Boxes with Borders ---
+# --- Custom CSS Styling with Brefonse Background and Black Bordered Cards ---
 st.markdown("""
     <style>
     body, .main, .stApp {
@@ -22,9 +22,6 @@ st.markdown("""
         border-radius: 12px;
         border: 2px solid #3b4252;  /* lighter brefonse border */
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-    }
-    h1, h2, h3, .stSubheader {
-        color: #00ffff !important;
     }
     .custom-metric {
         background-color: transparent;  /* no fill */
@@ -44,6 +41,18 @@ st.markdown("""
         font-size: 28px;
         font-weight: bold;
         margin: 0;
+    }
+    h1, h2, h3, .stSubheader {
+        color: #00ffff !important;
+    }
+    /* New black card style with white border */
+    .black-card {
+        background-color: #000000 !important;  /* solid black background */
+        border: 2px solid white !important;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
     }
     </style>
 """, unsafe_allow_html=True)
@@ -90,10 +99,14 @@ def send_sms_alert(tilt, vibration):
     except Exception as e:
         st.error(f"Failed to send SMS alert: {e}")
 
-# --- Title and Description ---
+# --- Title and Description with Black Card ---
 with st.container():
-    st.markdown('<div class="section">', unsafe_allow_html=True)
+    st.markdown('<div class="black-card">', unsafe_allow_html=True)
     st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with st.container():
+    st.markdown('<div class="black-card">', unsafe_allow_html=True)
     st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, and **sound levels** in real-time. Data updates every 5 seconds, categorized by risk level.")
     st.markdown('</div>', unsafe_allow_html=True)
 
