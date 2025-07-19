@@ -7,11 +7,11 @@ from streamlit_autorefresh import st_autorefresh
 # --- Page Config ---
 st.set_page_config(page_title="Scaffolding Safety Dashboard", layout="wide")
 
-# --- Custom CSS Styling with Brefonse (dark gray) Background and White Font + Bordered Metrics ---
+# --- Custom CSS Styling with Brefonse Background and Transparent Metric Boxes with Borders ---
 st.markdown("""
     <style>
     body, .main, .stApp {
-        background-color: #1f2937 !important;  /* brefonse/dark gray */
+        background-color: #1f2937 !important;  /* brefonse background */
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: white !important;
     }
@@ -20,15 +20,15 @@ st.markdown("""
         padding: 30px;
         margin-bottom: 25px;
         border-radius: 12px;
-        border: 2px solid white;
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        border: 2px solid #3b4252;  /* lighter brefonse border */
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     }
     h1, h2, h3, .stSubheader {
         color: #00ffff !important;
     }
     .custom-metric {
-        background-color: rgba(255, 255, 255, 0.07);
-        border: 2px solid white;
+        background-color: transparent;  /* no fill */
+        border: 2px solid #3b4252;     /* border color matching brefonse */
         border-radius: 10px;
         padding: 20px;
         margin-bottom: 20px;
