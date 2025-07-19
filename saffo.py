@@ -46,20 +46,20 @@ st.markdown("""
         color: #00ffff !important;
     }
 
-    /* Card border white, outer brefonse bg, inner blackish bg */
+    /* Card border white, outer brefonse bg, inner blackish bg with some transparency */
     .bordered-card {
         border: 2px solid white !important;
         border-radius: 12px;
         padding: 10px;
         margin-bottom: 25px;
-        background-color: #1f2937;  /* brefonse bg outside blackish inner */
-        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.9);
+        background-color: #1f2937;  /* brefonse bg outside */
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
     }
     .bordered-card-inner {
-        background-color: rgba(31, 41, 55, 0.9); /* transparent inside */
+        background-color: rgba(31, 41, 55, 0.9); /* transparent darker brefonse inside */
         border-radius: 10px;
         padding: 20px;
-        color: brefonse;
+        color: white;
     }
     </style>
 """, unsafe_allow_html=True)
