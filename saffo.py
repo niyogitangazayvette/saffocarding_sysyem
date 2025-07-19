@@ -53,7 +53,7 @@ st.markdown("""
         padding: 10px;
         margin-bottom: 25px;
         background-color: #1f2937;  /* brefonse bg outside */
-        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.9);
     }
     .bordered-card-inner {
         background-color: rgba(31, 41, 55, 0.9); /* transparent darker brefonse inside */
