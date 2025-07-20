@@ -74,7 +74,16 @@ def get_simulated_sensor_data():
     rotation_360 = round(np.random.uniform(0, 360), 1)
     bluetooth_signal = True if np.random.rand() > 0.1 else False
     buzzer_state = "ON" if tilt > 10 or vibration > 2.0 else "OFF"
-    return tilt, vibration, distance, sound_level, rotation_360, bluetooth_signal, buzzer_state
+
+    # New fields
+    acceleration_x = round(np.random.uniform(-10, 10), 2)
+    acceleration_y = round(np.random.uniform(-10, 10), 2)
+    acceleration_z = round(np.random.uniform(-10, 10), 2)
+    acceleration_total = round(np.sqrt(acceleration_x**2 + acceleration_y**2 + acceleration_z**2), 2)
+    temperature = round(np.random.uniform(20, 50), 1)  # degrees Celsius
+
+    return (tilt, vibration, distance, sound_level, rotation_360, bluetooth_signal, buzzer_state,
+            acceleration_x, acceleration_y, acceleration_z, acceleration_total, temperature)
 
 # --- Safety Status ---
 def evaluate_status(tilt):
@@ -112,11 +121,13 @@ st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Description ---
 st.markdown('<div class="bordered-card"><div class="bordered-card-inner">', unsafe_allow_html=True)
-st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, **sound levels**, and **rotation angle** in real-time. Data updates every 5 seconds, categorized by risk level.")
+st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, **sound levels**, **rotation angle**, **acceleration** and **temperature** in real-time. Data updates every 5 seconds, categorized by risk level.")
 st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Sensor Data ---
-tilt, vibration, distance, sound_level, rotation_360, bluetooth_signal, buzzer_state = get_simulated_sensor_data()
+(tilt, vibration, distance, sound_level, rotation_360, bluetooth_signal, buzzer_state,
+ acceleration_x, acceleration_y, acceleration_z, acceleration_total, temperature) = get_simulated_sensor_data()
+
 status, emoji = evaluate_status(tilt)
 
 # --- Metrics ---
@@ -141,26 +152,45 @@ col4.markdown(f"""
         <h4>Sound Level (dB)</h4><p>{sound_level}</p>
     </div>""", unsafe_allow_html=True)
 
-col5, col6 = st.columns(2)
+col5, col6 = st.columns(4)
 col5.markdown(f"""
     <div class="custom-metric">
-        <h4>Bluetooth Status</h4><p>{'🟦 Connected' if bluetooth_signal else '❌ Disconnected'}</p>
+        <h4>Rotation Angle (°)</h4><p>{rotation_360}°</p>
     </div>""", unsafe_allow_html=True)
 col6.markdown(f"""
     <div class="custom-metric">
         <h4>Buzzer</h4><p>{buzzer_state}</p>
     </div>""", unsafe_allow_html=True)
 
-st.markdown("""
-<div class="custom-metric">
-    <h4>Rotation Angle (°)</h4>
-    <p>{}</p>
-</div>
-""".format(rotation_360), unsafe_allow_html=True)
+col7, col8 = st.columns(4)
+col7.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration X (m/s²)</h4><p>{acceleration_x}</p>
+    </div>""", unsafe_allow_html=True)
+col8.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration Y (m/s²)</h4><p>{acceleration_y}</p>
+    </div>""", unsafe_allow_html=True)
+
+col9, col10 = st.columns(4)
+col9.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration Z (m/s²)</h4><p>{acceleration_z}</p>
+    </div>""", unsafe_allow_html=True)
+col10.markdown(f"""
+    <div class="custom-metric">
+        <h4>Total Acceleration (m/s²)</h4><p>{acceleration_total}</p>
+    </div>""", unsafe_allow_html=True)
+
+col11, col12 = st.columns(4)
+col11.markdown(f"""
+    <div class="custom-metric">
+        <h4>Temperature (°C)</h4><p>{temperature}°C</p>
+    </div>""", unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- Gauge Chart ---
+# --- Tilt Gauge Chart ---
 fig = go.Figure(go.Indicator(
     mode="gauge+number+delta",
     value=tilt,
@@ -189,7 +219,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 if status == "DANGER":
     send_sms_alert(tilt, vibration)
 
-# --- Overview ---
+# --- Project Overview ---
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown("""
 ### 📘 Project Overview
@@ -199,6 +229,8 @@ This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
 - Distance from ground (HC-SR04)
 - Sound levels (microphone)
 - Rotation angle (simulated 360° compass)
+- Acceleration on X, Y, Z axes & total acceleration magnitude
+- Temperature (simulated)
 - Visual alerts (LEDs)
 - Audible alerts (buzzer)
 - Wireless Bluetooth data transfer to supervisor
