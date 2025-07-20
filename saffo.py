@@ -2,7 +2,6 @@ import streamlit as st
 import plotly.graph_objects as go
 import numpy as np
 import requests
-import bluetooth
 from streamlit_autorefresh import st_autorefresh
 
 # --- Page Config ---
@@ -73,28 +72,18 @@ def get_simulated_sensor_data():
     distance = round(np.random.uniform(50, 200), 2)
     sound_level = round(np.random.uniform(20, 100), 2)
     rotation_360 = round(np.random.uniform(0, 360), 1)
-    bluetooth_signal = check_bluetooth_connection()
+    bluetooth_signal = True if np.random.rand() > 0.1 else False
     buzzer_state = "ON" if tilt > 10 or vibration > 2.0 else "OFF"
 
+    # New fields
     acceleration_x = round(np.random.uniform(-10, 10), 2)
     acceleration_y = round(np.random.uniform(-10, 10), 2)
     acceleration_z = round(np.random.uniform(-10, 10), 2)
     acceleration_total = round(np.sqrt(acceleration_x**2 + acceleration_y**2 + acceleration_z**2), 2)
-    temperature = round(np.random.uniform(20, 50), 1)
+    temperature = round(np.random.uniform(20, 50), 1)  # degrees Celsius
 
     return (tilt, vibration, distance, sound_level, rotation_360, bluetooth_signal, buzzer_state,
             acceleration_x, acceleration_y, acceleration_z, acceleration_total, temperature)
-
-# --- Bluetooth Scanner ---
-def check_bluetooth_connection():
-    try:
-        nearby_devices = bluetooth.discover_devices(duration=4, lookup_names=True)
-        for addr, name in nearby_devices:
-            if "HC-05" in name:
-                return True
-        return False
-    except:
-        return False
 
 # --- Safety Status ---
 def evaluate_status(tilt):
@@ -132,7 +121,7 @@ st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Description ---
 st.markdown('<div class="bordered-card"><div class="bordered-card-inner">', unsafe_allow_html=True)
-st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, **sound levels**, **rotation angle**, **acceleration**, **temperature**, and **Bluetooth connection** in real-time. Data updates every 5 seconds.")
+st.markdown("Monitor scaffold **tilt**, **vibration**, **distance from ground**, **sound levels**, **rotation angle**, **acceleration** and **temperature** in real-time. Data updates every 5 seconds, categorized by risk level.")
 st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Sensor Data ---
@@ -145,23 +134,64 @@ status, emoji = evaluate_status(tilt)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.subheader(f"System Status: {emoji} {status}")
 
+# -------------------- Bluetooth Status --------------------
+col5, col6 = st.columns(2)
+with col5:
+    st.subheader("🔗 Bluetooth Status")
+    if bluetooth_signal:
+        st.success("Connected ✅")
+    else:
+        st.error("Disconnected ❌")
+
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Tilt Angle (°)", tilt)
-col2.metric("Vibration Level", vibration)
-col3.metric("Distance (cm)", distance)
-col4.metric("Sound Level (dB)", sound_level)
+col1.markdown(f"""
+    <div class="custom-metric">
+        <h4>Tilt Angle (°)</h4><p>{tilt}°</p>
+    </div>""", unsafe_allow_html=True)
+col2.markdown(f"""
+    <div class="custom-metric">
+        <h4>Vibration Level</h4><p>{vibration}</p>
+    </div>""", unsafe_allow_html=True)
+col3.markdown(f"""
+    <div class="custom-metric">
+        <h4>Distance from Ground (cm)</h4><p>{distance}</p>
+    </div>""", unsafe_allow_html=True)
+col4.markdown(f"""
+    <div class="custom-metric">
+        <h4>Sound Level (dB)</h4><p>{sound_level}</p>
+    </div>""", unsafe_allow_html=True)
 
 col5, col6, col7, col8 = st.columns(4)
-col5.metric("Rotation Angle (°)", rotation_360)
-col6.metric("Bluetooth Connected", "Yes" if bluetooth_signal else "No")
-col7.metric("Buzzer State", buzzer_state)
-col8.metric("Temperature (°C)", temperature)
+col5.markdown(f"""
+    <div class="custom-metric">
+        <h4>Rotation Angle (°)</h4><p>{rotation_360}°</p>
+    </div>""", unsafe_allow_html=True)
+col6.markdown(f"""
+    <div class="custom-metric">
+        <h4>Buzzer</h4><p>{buzzer_state}</p>
+    </div>""", unsafe_allow_html=True)
+col7.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration X (m/s²)</h4><p>{acceleration_x}</p>
+    </div>""", unsafe_allow_html=True)
+col8.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration Y (m/s²)</h4><p>{acceleration_y}</p>
+    </div>""", unsafe_allow_html=True)
 
 col9, col10, col11, col12 = st.columns(4)
-col9.metric("Accel X", acceleration_x)
-col10.metric("Accel Y", acceleration_y)
-col11.metric("Accel Z", acceleration_z)
-col12.metric("Total Accel", acceleration_total)
+col9.markdown(f"""
+    <div class="custom-metric">
+        <h4>Acceleration Z (m/s²)</h4><p>{acceleration_z}</p>
+    </div>""", unsafe_allow_html=True)
+col10.markdown(f"""
+    <div class="custom-metric">
+        <h4>Total Acceleration (m/s²)</h4><p>{acceleration_total}</p>
+    </div>""", unsafe_allow_html=True)
+col11.markdown(f"""
+    <div class="custom-metric">
+        <h4>Temperature (°C)</h4><p>{temperature}°C</p>
+    </div>""", unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -208,7 +238,7 @@ This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
 - Temperature (simulated)
 - Visual alerts (LEDs)
 - Audible alerts (buzzer)
-- Wireless Bluetooth data transfer to supervisor (HC-05)
+- Wireless Bluetooth data transfer to supervisor
 
 **Thresholds:**
 - 🟢 SAFE: Tilt ≤ 5°
