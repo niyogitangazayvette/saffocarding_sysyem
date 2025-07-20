@@ -239,6 +239,6 @@ This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
 - Wireless data via HC-05 Bluetooth
 - Alerts sent to supervisor via SMS
 
-⚠️ Ready for live integration with Proteus & Arduino devices.
+⚠️ Ready for live integration.
 """)
 st.markdown('</div>', unsafe_allow_html=True)
