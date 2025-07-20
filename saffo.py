@@ -152,7 +152,7 @@ col4.markdown(f"""
         <h4>Sound Level (dB)</h4><p>{sound_level}</p>
     </div>""", unsafe_allow_html=True)
 
-col5, col6 = st.columns(4)
+col5, col6, col7, col8 = st.columns(4)
 col5.markdown(f"""
     <div class="custom-metric">
         <h4>Rotation Angle (°)</h4><p>{rotation_360}°</p>
@@ -161,8 +161,6 @@ col6.markdown(f"""
     <div class="custom-metric">
         <h4>Buzzer</h4><p>{buzzer_state}</p>
     </div>""", unsafe_allow_html=True)
-
-col7, col8 = st.columns(4)
 col7.markdown(f"""
     <div class="custom-metric">
         <h4>Acceleration X (m/s²)</h4><p>{acceleration_x}</p>
@@ -172,7 +170,7 @@ col8.markdown(f"""
         <h4>Acceleration Y (m/s²)</h4><p>{acceleration_y}</p>
     </div>""", unsafe_allow_html=True)
 
-col9, col10 = st.columns(4)
+col9, col10, col11, col12 = st.columns(4)
 col9.markdown(f"""
     <div class="custom-metric">
         <h4>Acceleration Z (m/s²)</h4><p>{acceleration_z}</p>
@@ -181,8 +179,6 @@ col10.markdown(f"""
     <div class="custom-metric">
         <h4>Total Acceleration (m/s²)</h4><p>{acceleration_total}</p>
     </div>""", unsafe_allow_html=True)
-
-col11, col12 = st.columns(4)
 col11.markdown(f"""
     <div class="custom-metric">
         <h4>Temperature (°C)</h4><p>{temperature}°C</p>
