@@ -57,7 +57,7 @@ st.markdown("""
         background-color: rgba(31, 41, 55, 0.9);
         border-radius: 10px;
         padding: 20px;
-        color: white;
+        color: ;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -108,7 +108,7 @@ def send_sms_alert(tilt, vibration):
         })
         result = response.json()
         if result.get('success'):
-            st.success("🚨 SMS alert sent successfully!")
+            st.success(" SMS alert sent successfully!")
         else:
             st.warning(f"SMS failed: {result.get('error', 'Unknown error')}")
     except Exception as e:
@@ -116,7 +116,7 @@ def send_sms_alert(tilt, vibration):
 
 # --- Title ---
 st.markdown('<div class="bordered-card"><div class="bordered-card-inner">', unsafe_allow_html=True)
-st.title("🛠️ Scaffolding Safety Monitoring System (Live Stream)")
+st.title(" Scaffolding Safety Monitoring System (Live Stream)")
 st.markdown('</div></div>', unsafe_allow_html=True)
 
 # --- Description ---
@@ -137,11 +137,11 @@ st.subheader(f"System Status: {emoji} {status}")
 # -------------------- Bluetooth Status --------------------
 col5, col6 = st.columns(2)
 with col5:
-    st.subheader("🔗 Bluetooth Status")
+    st.subheader(" Bluetooth Status")
     if bluetooth_signal:
-        st.success("Connected ✅")
+        st.success("Connected ")
     else:
-        st.error("Disconnected ❌")
+        st.error("Disconnected ")
 
 col1, col2, col3, col4 = st.columns(4)
 col1.markdown(f"""
@@ -227,7 +227,7 @@ if status == "DANGER":
 # --- Project Overview ---
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.markdown("""
-### 📘 Project Overview
+### Project Overview
 This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
 - Tilt angle (MPU6050)
 - Vibration intensity
@@ -248,6 +248,6 @@ This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
 - Wireless data via HC-05 Bluetooth
 - Alerts sent to supervisor via SMS
 
-⚠️ Ready for live integration.
+ Ready for live integration.
 """)
 st.markdown('</div>', unsafe_allow_html=True)
