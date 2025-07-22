@@ -224,30 +224,3 @@ st.markdown('</div>', unsafe_allow_html=True)
 if status == "DANGER":
     send_sms_alert(tilt, vibration)
 
-# --- Project Overview ---
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.markdown("""
-### Project Overview
-This **Scaffolding Safety Monitoring System** uses Arduino to monitor:
-- Tilt angle (MPU6050)
-- Vibration intensity
-- Distance from ground (HC-SR04)
-- Sound levels (microphone)
-- Rotation angle (simulated 360° compass)
-- Acceleration on X, Y, Z axes & total acceleration magnitude
-- Temperature (simulated)
-- Visual alerts (LEDs)
-- Audible alerts (buzzer)
-- Wireless Bluetooth data transfer to supervisor
-
-**Thresholds:**
-- 🟢 SAFE: Tilt ≤ 5°
-- 🟠 WARNING: Tilt 5°–10°
-- 🔴 DANGER: Tilt > 10°
-- Vibration > 2.0 triggers buzzer
-- Wireless data via HC-05 Bluetooth
-- Alerts sent to supervisor via SMS
-
- Ready for live integration.
-""")
-st.markdown('</div>', unsafe_allow_html=True)
